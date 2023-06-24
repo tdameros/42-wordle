@@ -1,4 +1,5 @@
 import PySide6
+import sys
 import string
 import random
 from dataclasses import dataclass
@@ -30,7 +31,6 @@ class Character:
 
 def analyse(input: str) -> list[Character] | None:
     if (len(input) != char_count) or (input not in words):
-        print("Invalid word.")
         return None
 
     tmp: list[str | None] = [c for c in choosen]
@@ -52,20 +52,27 @@ def analyse(input: str) -> list[Character] | None:
 
     return result
 
-if __name__ == "__main__":
-    f = open("words.txt", "r")
+def load(filename: string) -> str | None:
+    global words
+    global choosen
+
+    f = open(filename, "r")
     lines: list[str] = f.readlines()
     words = [x.strip() for x in lines if x.strip()]
     if not len(words):
-        print("Empty database")
-        exit(1)
-    if any(x for x in words if len(x) != char_count):
-        print("Some words are not 5 characters")
-        exit(1)
-    if any(word for word in words if not all((letter in string.ascii_lowercase) for letter in word)):
-        print("Some words are not using alphabetic symbols [a-z]")
-        exit(1)
+        return "Empty database"
+    elif any(x for x in words if len(x) != char_count):
+        return "Some words are not 5 characters"
+    elif any(word for word in words if not all((letter in string.ascii_lowercase) for letter in word)):
+        return "Some words are not using alphabetic symbols [a-z]"
     choosen = random.choice(words)
+    return None
+
+if __name__ == "__main__":
+    error = load("words.txt")
+    if error:
+        print(error, file=sys.stderr)
+        exit(1)
 
     # open_window()
     while 1:
