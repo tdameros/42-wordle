@@ -12,27 +12,32 @@ class BoxStyleSheet(Enum):
         border: 2px solid #3A3A3C;
         font-size: 42px;
         font-weight: bold;
+        color: white;
     """
     FILLED = """
         background-color: #121213;
         border: 2px solid #565758;
         font-size: 42px;
         font-weight: bold;
+        color: white;
     """
     CORRECT = """
         background-color: #528C4D;
         font-size: 42px;
         font-weight: bold;
+        color: white;
     """
     WRONG_PLACE = """
         background-color: #B69E3C;
         font-size: 42px;
         font-weight: bold;
+        color: white;
     """
     INCORRECT = """
         background-color: #565758;
         font-size: 42px;
         font-weight: bold;
+        color: white;
     """
 
 
