@@ -141,6 +141,7 @@ class MainWindow(QWidget):
     @staticmethod
     def launch_exit_box(win: bool):
         dialog_box = QMessageBox()
+        dialog_box.setStyleSheet(BoxStyleSheet.FILLED.value)
         if win:
             dialog_box.setText("Winner!")
         else:
