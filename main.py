@@ -10,7 +10,6 @@ if __name__ == '__main__':
     if error:
         print(error, file=sys.stderr)
         exit(1)
-    print(game.choosen)
     app = QApplication()
     main_window = gui.MainWindow()
     main_window.show()
