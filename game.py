@@ -53,11 +53,11 @@ def analyse(input: str) -> list[Character] | None:
     return result
 
 
-def load(filename: string, settings: Settings) -> str | None:
+def load(settings: Settings) -> str | None:
     global words
     global choosen
 
-    f = open(filename, "r")
+    f = open(settings.file, "r")
     lines: list[str] = f.readlines()
     words = [x.strip() for x in lines if x.strip()]
     if not len(words):
