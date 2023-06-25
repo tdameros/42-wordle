@@ -73,6 +73,6 @@ def load(filename: string, settings: Settings) -> str | None:
         date = datetime.datetime.now()
         index = date.year * 100000 + date.month * 1000 + date.day
         index %= len(words)
+        choosen = words[index]
 
-    choosen = words[index]
     return None
