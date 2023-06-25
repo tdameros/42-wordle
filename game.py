@@ -57,8 +57,12 @@ def load(settings: Settings) -> str | None:
     global words
     global choosen
 
-    f = open(settings.file, "r")
-    lines: list[str] = f.readlines()
+    try:
+        with open(settings.file, "r") as f:
+            lines: list[str] = f.readlines()
+    except Exception as err:
+        return err.strerror
+
     words = [x.strip() for x in lines if x.strip()]
     if not len(words):
         return "Empty database"
