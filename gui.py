@@ -1,6 +1,6 @@
 from enum import Enum
 
-from PySide6.QtWidgets import QWidget, QGridLayout, QLabel, QMessageBox
+from PySide6.QtWidgets import QWidget, QGridLayout, QLabel, QMessageBox, QPushButton
 from PySide6.QtCore import Qt
 
 import game
@@ -42,26 +42,31 @@ class BoxStyleSheet(Enum):
 
 
 class MainWindow(QWidget):
+    window_padding: int = 10
+    box_size: int = 80
+    max_word: int = 6
+    max_letter: int = 5
+
+    word_count: int = 0
+    letter_count: int = 0
+    current_word: str = ""
 
     def __init__(self):
         super().__init__()
-
-        self.width = 500
-        self.height = 600
-        self.box_size = 80
-        self.max_word = 6
-        self.max_letter = 5
 
         self.word_count = 0
         self.letter_count = 0
         self.current_word = ""
 
+        self.width = (self.max_letter * self.box_size) + (2 * self.window_padding)
+        self.height = (self.max_word * self.box_size) + (2 * self.window_padding)
+
         self.setup_ui()
 
     def setup_ui(self):
         self.setWindowTitle("Wordle")
-        self.setMinimumSize(500, 600)
-        self.setMaximumSize(500, 600)
+        self.setMinimumSize(self.width, self.height)
+        self.setMaximumSize(self.width, self.height)
         self.layout = QGridLayout()
         self.setStyleSheet("""
         background-color: #121213;
@@ -138,14 +143,22 @@ class MainWindow(QWidget):
             elif game_analyse[i].status == game.CharacterStatus.CORRECT:
                 box.setStyleSheet(BoxStyleSheet.CORRECT.value)
 
-    @staticmethod
-    def launch_exit_box(win: bool):
-        dialog_box = QMessageBox()
-        dialog_box.setStyleSheet(BoxStyleSheet.FILLED.value)
+    def launch_exit_box(self, win: bool):
+        global game
+
+        msgBox = QMessageBox()
+
         if win:
-            dialog_box.setText("Winner!")
+            msgBox.setWindowTitle("Winner!")
         else:
-            dialog_box.setText("Looser!")
-        dialog_box.exec_()
+            msgBox.setWindowTitle("Looser!")
+            msgBox.setText(f"The word was \"{game.choosen}\"")
+
+        msgBox.exec_()
+
+    def quit(self):
         exit(0)
+
+    def restart(self):
+        exit(1)
 

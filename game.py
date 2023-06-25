@@ -62,7 +62,7 @@ def load(filename: string) -> str | None:
     if not len(words):
         return "Empty database"
     elif any(x for x in words if len(x) != char_count):
-        return "Some words are not 5 characters"
+        return f"Some words are not {char_count} characters"
     elif any(word for word in words if not all((letter in string.ascii_lowercase) for letter in word)):
         return "Some words are not using alphabetic symbols [a-z]"
     choosen = random.choice(words)
