@@ -155,10 +155,3 @@ class MainWindow(QWidget):
             msgBox.setText(f"The word was \"{game.choosen}\"")
 
         msgBox.exec_()
-
-    def quit(self):
-        exit(0)
-
-    def restart(self):
-        exit(1)
-
