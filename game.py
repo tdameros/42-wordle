@@ -3,6 +3,7 @@ import random
 import datetime
 from dataclasses import dataclass
 from enum import Enum
+
 from settings import Settings
 
 choosen: str = None
@@ -15,7 +16,7 @@ class CharacterStatus(Enum):
 
 @dataclass
 class Character:
-    char: str # char
+    char: str
     status: CharacterStatus
 
     def __str__(self):
