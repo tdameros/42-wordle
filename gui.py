@@ -150,8 +150,10 @@ class MainWindow(QWidget):
 
         if win:
             msgBox.setWindowTitle("Winner!")
+            msgBox.setText(f"You found the word \"{game.choosen}\"!")
         else:
             msgBox.setWindowTitle("Looser!")
             msgBox.setText(f"The word was \"{game.choosen}\"")
 
         msgBox.exec_()
+        exit(0)

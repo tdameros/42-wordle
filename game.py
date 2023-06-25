@@ -1,5 +1,6 @@
 import string
 import random
+import datetime
 from dataclasses import dataclass
 from enum import Enum
 
@@ -65,5 +66,10 @@ def load(filename: string) -> str | None:
         return f"Some words are not {char_count} characters"
     elif any(word for word in words if not all((letter in string.ascii_lowercase) for letter in word)):
         return "Some words are not using alphabetic symbols [a-z]"
-    choosen = random.choice(words)
+
+    date = datetime.datetime.now()
+    index = date.year * 100000 + date.month * 1000 + date.day
+    index %= len(words)
+    # choosen = random.choice(words)
+    choosen = words[index]
     return None
