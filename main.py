@@ -7,7 +7,7 @@ from gui import MainWindow
 from settings import Settings
 
 if __name__ == '__main__':
-    settings = Settings(letters=5, max_words=6)
+    settings = Settings(random=False, letters=5, max_words=6)
 
     error = game.load("words.txt", settings)
     if error:
