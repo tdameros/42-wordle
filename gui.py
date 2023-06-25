@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QWidget, QGridLayout, QLabel, QMessageBox, QPushBu
 from PySide6.QtCore import Qt
 
 import game
+from settings import Settings
 
 
 class BoxStyleSheet(Enum):
@@ -44,22 +45,23 @@ class BoxStyleSheet(Enum):
 class MainWindow(QWidget):
     window_padding: int = 10
     box_size: int = 80
-    max_word: int = 6
-    max_letter: int = 5
+    settings: Settings
 
     word_count: int = 0
     letter_count: int = 0
     current_word: str = ""
 
-    def __init__(self):
+    def __init__(self, settings: Settings):
         super().__init__()
+
+        self.settings = settings
 
         self.word_count = 0
         self.letter_count = 0
         self.current_word = ""
 
-        self.width = (self.max_letter * self.box_size) + (2 * self.window_padding)
-        self.height = (self.max_word * self.box_size) + (2 * self.window_padding)
+        self.width = (self.settings.letters * self.box_size) + (2 * self.window_padding)
+        self.height = (self.settings.max_words * self.box_size) + (2 * self.window_padding)
 
         self.setup_ui()
 
@@ -72,8 +74,8 @@ class MainWindow(QWidget):
         background-color: #121213;
         """)
         self.boxes = []
-        for y in range(self.max_word):
-            for x in range(self.max_letter):
+        for y in range(self.settings.max_words):
+            for x in range(self.settings.letters):
                 box = self.create_box("", self.box_size)
                 self.boxes.append(box)
                 self.layout.addWidget(box, y, x)
@@ -97,12 +99,12 @@ class MainWindow(QWidget):
             self.add_letter(event.text()[0].lower())
 
     def get_current_box(self):
-        return self.boxes[self.word_count * self.max_letter + self.letter_count]
+        return self.boxes[self.word_count * self.settings.letters + self.letter_count]
 
     def get_previous_box(self):
         if self.letter_count == 0:
             return None
-        return self.boxes[self.word_count * self.max_letter + self.letter_count - 1]
+        return self.boxes[self.word_count * self.settings.letters + self.letter_count - 1]
 
     def delete_letter(self):
         box = self.get_previous_box()
@@ -113,7 +115,7 @@ class MainWindow(QWidget):
             self.current_word = self.current_word[:-1]
 
     def add_letter(self, letter: str):
-        if letter.isalpha() and self.letter_count < self.max_letter:
+        if letter.isalpha() and self.letter_count < self.settings.letters:
             box = self.get_current_box()
             box.setText(letter.upper())
             box.setStyleSheet(BoxStyleSheet.FILLED.value)
@@ -122,18 +124,18 @@ class MainWindow(QWidget):
 
     def check_word(self):
         game_analyse = game.analyse(self.current_word)
-        if self.letter_count == self.max_letter and game_analyse is not None:
+        if self.letter_count == self.settings.letters and game_analyse is not None:
             self.color_letters(game_analyse)
             if game.choosen == self.current_word:
                 self.launch_exit_box(True)
             self.letter_count = 0
             self.current_word = ""
             self.word_count += 1
-            if self.word_count == self.max_word:
+            if self.word_count == self.settings.max_words:
                 self.launch_exit_box(False)
 
     def color_letters(self, game_analyse):
-        for i in range(self.max_letter):
+        for i in range(self.settings.letters):
             self.letter_count = i
             box = self.get_current_box()
             if game_analyse[i].status == game.CharacterStatus.INCORRECT:

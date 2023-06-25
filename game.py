@@ -3,11 +3,10 @@ import random
 import datetime
 from dataclasses import dataclass
 from enum import Enum
+from settings import Settings
 
-char_count = 5
-
-choosen = None
-words = None
+choosen: str = None
+words: list[str] = None
 
 class CharacterStatus(Enum):
     CORRECT = 1
@@ -28,13 +27,14 @@ class Character:
             case _:
                 return f"\033[38m{self.char}\033[0m"
 
-
 def analyse(input: str) -> list[Character] | None:
-    if (len(input) != char_count) or (input not in words):
+    global settings
+
+    if (input not in words):
         return None
 
     tmp: list[str | None] = [c for c in choosen]
-    result: list[Character | None] = [None] * char_count
+    result: list[Character | None] = [None] * len(input)
 
     for i in range(len(input)):
         if input[i] == tmp[i]:
@@ -53,7 +53,7 @@ def analyse(input: str) -> list[Character] | None:
     return result
 
 
-def load(filename: string) -> str | None:
+def load(filename: string, settings: Settings) -> str | None:
     global words
     global choosen
 
@@ -62,11 +62,12 @@ def load(filename: string) -> str | None:
     words = [x.strip() for x in lines if x.strip()]
     if not len(words):
         return "Empty database"
-    elif any(x for x in words if len(x) != char_count):
-        return f"Some words are not {char_count} characters"
+    elif any(x for x in words if len(x) != settings.letters):
+        return f"Some words are not {settings.letters} characters"
     elif any(word for word in words if not all((letter in string.ascii_lowercase) for letter in word)):
         return "Some words are not using alphabetic symbols [a-z]"
 
+    letters = settings.letters
     date = datetime.datetime.now()
     index = date.year * 100000 + date.month * 1000 + date.day
     index %= len(words)

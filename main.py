@@ -3,14 +3,17 @@ import sys
 from PySide6.QtWidgets import QApplication
 
 import game
-import gui
+from gui import MainWindow
+from settings import Settings
 
 if __name__ == '__main__':
-    error = game.load("words.txt")
+    settings = Settings(letters=5, max_words=6)
+
+    error = game.load("words.txt", settings)
     if error:
         print(error, file=sys.stderr)
         exit(1)
     app = QApplication()
-    main_window = gui.MainWindow()
+    main_window = MainWindow(settings)
     main_window.show()
     app.exec()
