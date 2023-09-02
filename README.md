@@ -1,4 +1,4 @@
-# Wordle Rush - School 42
+# Wordle Rush
 
 Wordle Rush is a word search game created as part of the 42 Rush school program. In a 48-hour project, our team used Python and the PySide6 library to build a graphical user interface (GUI) for the game.
 
@@ -31,3 +31,7 @@ We developed Wordle using Python, and the GUI was built using PySide6, a library
 pip3 install -r requirements.txt
 python3 main.py
 ```
+
+## Example
+
+![Example](example.png)
